@@ -1,0 +1,732 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "1a5df010",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "b012c618",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>oas</th>\n",
+       "      <th>java</th>\n",
+       "      <th>se</th>\n",
+       "      <th>ds</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>10</td>\n",
+       "      <td>15</td>\n",
+       "      <td>11</td>\n",
+       "      <td>12</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>45</td>\n",
+       "      <td>66</td>\n",
+       "      <td>23</td>\n",
+       "      <td>14</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>22</td>\n",
+       "      <td>33</td>\n",
+       "      <td>44</td>\n",
+       "      <td>55</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>78</td>\n",
+       "      <td>88</td>\n",
+       "      <td>96</td>\n",
+       "      <td>45</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   oas  java  se  ds\n",
+       "0   10    15  11  12\n",
+       "1   45    66  23  14\n",
+       "2   22    33  44  55\n",
+       "3   78    88  96  45"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df=pd.DataFrame([[10,15,11,12],\n",
+    "              [45,66,23,14],\n",
+    "              [22,33,44,55],\n",
+    "              [78,88,96,45]],\n",
+    "             columns=['oas','java','se','ds'])\n",
+    "df\n",
+    "                     "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "fbee4bdc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>oas</th>\n",
+       "      <th>java</th>\n",
+       "      <th>se</th>\n",
+       "      <th>ds</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>4.000000</td>\n",
+       "      <td>4.000000</td>\n",
+       "      <td>4.00000</td>\n",
+       "      <td>4.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>38.750000</td>\n",
+       "      <td>50.500000</td>\n",
+       "      <td>43.50000</td>\n",
+       "      <td>31.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>29.926298</td>\n",
+       "      <td>32.726136</td>\n",
+       "      <td>37.56328</td>\n",
+       "      <td>21.763884</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>10.000000</td>\n",
+       "      <td>15.000000</td>\n",
+       "      <td>11.00000</td>\n",
+       "      <td>12.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>19.000000</td>\n",
+       "      <td>28.500000</td>\n",
+       "      <td>20.00000</td>\n",
+       "      <td>13.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>33.500000</td>\n",
+       "      <td>49.500000</td>\n",
+       "      <td>33.50000</td>\n",
+       "      <td>29.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>53.250000</td>\n",
+       "      <td>71.500000</td>\n",
+       "      <td>57.00000</td>\n",
+       "      <td>47.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>78.000000</td>\n",
+       "      <td>88.000000</td>\n",
+       "      <td>96.00000</td>\n",
+       "      <td>55.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "             oas       java        se         ds\n",
+       "count   4.000000   4.000000   4.00000   4.000000\n",
+       "mean   38.750000  50.500000  43.50000  31.500000\n",
+       "std    29.926298  32.726136  37.56328  21.763884\n",
+       "min    10.000000  15.000000  11.00000  12.000000\n",
+       "25%    19.000000  28.500000  20.00000  13.500000\n",
+       "50%    33.500000  49.500000  33.50000  29.500000\n",
+       "75%    53.250000  71.500000  57.00000  47.500000\n",
+       "max    78.000000  88.000000  96.00000  55.000000"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "2849ef58",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     155\n",
+       "java    202\n",
+       "se      174\n",
+       "ds      126\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "8d1239cb",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     78\n",
+       "java    88\n",
+       "se      96\n",
+       "ds      55\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.max()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "64799706",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     10\n",
+       "java    15\n",
+       "se      11\n",
+       "ds      12\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.min()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "2d1346b2",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     38.75\n",
+       "java    50.50\n",
+       "se      43.50\n",
+       "ds      31.50\n",
+       "dtype: float64"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "9aa5e1c9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     4\n",
+       "java    4\n",
+       "se      4\n",
+       "ds      4\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.count()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "f09aab9a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "oas     33.5\n",
+       "java    49.5\n",
+       "se      33.5\n",
+       "ds      29.5\n",
+       "dtype: float64"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.median()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "057b84e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>oas</th>\n",
+       "      <th>java</th>\n",
+       "      <th>se</th>\n",
+       "      <th>ds</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>sum</th>\n",
+       "      <td>155</td>\n",
+       "      <td>202</td>\n",
+       "      <td>174</td>\n",
+       "      <td>126</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>10</td>\n",
+       "      <td>15</td>\n",
+       "      <td>11</td>\n",
+       "      <td>12</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>78</td>\n",
+       "      <td>88</td>\n",
+       "      <td>96</td>\n",
+       "      <td>55</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     oas  java   se   ds\n",
+       "sum  155   202  174  126\n",
+       "min   10    15   11   12\n",
+       "max   78    88   96   55"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.agg(['sum','min','max'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "a4955f39",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Frist name</th>\n",
+       "      <th>Last name</th>\n",
+       "      <th>Type</th>\n",
+       "      <th>Department</th>\n",
+       "      <th>YOE</th>\n",
+       "      <th>Salary</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Akash</td>\n",
+       "      <td>Torvi</td>\n",
+       "      <td>Full-Time</td>\n",
+       "      <td>administraction</td>\n",
+       "      <td>2</td>\n",
+       "      <td>20000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Harshad</td>\n",
+       "      <td>Walikar</td>\n",
+       "      <td>Full-Time</td>\n",
+       "      <td>Technical</td>\n",
+       "      <td>4</td>\n",
+       "      <td>30000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Rahul</td>\n",
+       "      <td>B</td>\n",
+       "      <td>Full-Time</td>\n",
+       "      <td>administraction</td>\n",
+       "      <td>2</td>\n",
+       "      <td>40000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Abhinav</td>\n",
+       "      <td>nai</td>\n",
+       "      <td>Full-Time</td>\n",
+       "      <td>administraction</td>\n",
+       "      <td>6</td>\n",
+       "      <td>50000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Gurya</td>\n",
+       "      <td>Biradar</td>\n",
+       "      <td>intern</td>\n",
+       "      <td>administraction</td>\n",
+       "      <td>2</td>\n",
+       "      <td>20000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Frist name Last name       Type       Department  YOE  Salary\n",
+       "0      Akash     Torvi  Full-Time  administraction    2   20000\n",
+       "1    Harshad   Walikar  Full-Time        Technical    4   30000\n",
+       "2      Rahul         B  Full-Time  administraction    2   40000\n",
+       "3    Abhinav       nai  Full-Time  administraction    6   50000\n",
+       "4      Gurya   Biradar     intern  administraction    2   20000"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1=pd.DataFrame(\n",
+    "    [\n",
+    "        ['Akash','Torvi','Full-Time','administraction',2,20000],\n",
+    "        ['Harshad','Walikar','Full-Time','Technical',4,30000],\n",
+    "        ['Rahul','B','Full-Time','administraction',2,40000],\n",
+    "        ['Abhinav','nai','Full-Time','administraction',6,50000],\n",
+    "        ['Gurya','Biradar','intern','administraction',2,20000],\n",
+    "    ],columns=['Frist name','Last name','Type','Department','YOE','Salary']\n",
+    "\n",
+    "\n",
+    "\n",
+    "    )\n",
+    "df1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "001ae9b3",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>YOE</th>\n",
+       "      <th>Salary</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Type</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>Full-Time</th>\n",
+       "      <td>14</td>\n",
+       "      <td>140000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>intern</th>\n",
+       "      <td>2</td>\n",
+       "      <td>20000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "           YOE  Salary\n",
+       "Type                  \n",
+       "Full-Time   14  140000\n",
+       "intern       2   20000"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1.groupby(['Type']).sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "be3caaca",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th>YOE</th>\n",
+       "      <th>Salary</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Type</th>\n",
+       "      <th>Department</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th rowspan=\"2\" valign=\"top\">Full-Time</th>\n",
+       "      <th>Technical</th>\n",
+       "      <td>4.000000</td>\n",
+       "      <td>30000.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>administraction</th>\n",
+       "      <td>3.333333</td>\n",
+       "      <td>36666.666667</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>intern</th>\n",
+       "      <th>administraction</th>\n",
+       "      <td>2.000000</td>\n",
+       "      <td>20000.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                YOE        Salary\n",
+       "Type      Department                             \n",
+       "Full-Time Technical        4.000000  30000.000000\n",
+       "          administraction  3.333333  36666.666667\n",
+       "intern    administraction  2.000000  20000.000000"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1.groupby(['Type','Department']).mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d93873a5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
